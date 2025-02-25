@@ -10,19 +10,39 @@
 
 <body>
     <center>
-    <h1>Hello from node and express server!</h1>
+    <h1>herkkuja</h1>
 
     <div id="sisältö"></div>
     </center>
 
     <script>
 
+        async function fetchData() {
         document.getElementById("sisältö").innerHTML = "<h4>Ladataan herkkuja...</h4>"
 
-        fetch("http://localhost:3000/api/herkut")
-        .then(res => res.json())
-        .then(js => console.log(js))
-    
+        var x = `<table><thead><th>Herkun nimi</th><th>tuotekoodi</th></thead><tbody>`
+
+        try {
+            const response = await fetch("http://localhost:3000/api/herkut")
+
+            const herkkudata = await response.json()
+
+            await herkkudata.map(h => {
+            x += `<tr><td>${h.name}</td><td>${h.id}</td></tr>`
+            })
+
+
+            x += `</tbody></table>`
+            document.getElementById("sisältö").innerHTML = x
+        
+    } 
+    catch (error) {
+        console.error("Error fetching data:", error);
+        }
+
+        }
+        
+        fetchData()
     </script>
 
 </body>
